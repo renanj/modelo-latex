@@ -1,6 +1,8 @@
 # makefile para a compilacao do documento
 
 BASE_NAME := main
+BUILD_DIR := build
+PDF_NAME  := tese.pdf
 
 LATEX := pdflatex
 #LATEX := lualatex
@@ -119,9 +121,10 @@ all: $(BASE_NAME).pdf
 	@if make -sq; then \
 		$(SHOW_REPORT); \
 		$(SHOW_SUCCESS_MSG); \
+		$(MAKE) post-build; \
 	else \
 		make -s; \
-	fi
+	fi 
 
 # bitex/biber e makeindex/xindy dependem de arquivos gerados pelo LaTeX
 %.idx-current %.bcf-current: %.tex $(BIBFILES) $(IMGFILES) $(TIKZ) $(CHAPTERS) $(OTHERTEXFILES) $(MISCFILES)
@@ -147,13 +150,23 @@ all: $(BASE_NAME).pdf
 		echo; \
 		echo "    **** Erro durante a execucao do bibtex/biber ****"; \
 		exit 1; \
-	fi
-	@echo
+	fi 
+	@echo 
+
+post-build:
+	@echo post build - moving files to build/ and renaming pdf
+	@mkdir -p $(BUILD_DIR)
+	@cp $(BASE_NAME).pdf $(PDF_NAME)
+	@mv *-current *.log *.aux *.bbl \
+	    *.bcf *.blg *.fls *.idx *.ilg \
+	    *.ind *.lof *.lot *.out *.xml \
+	    *.gz *.toc $(BASE_NAME).pdf $(BUILD_DIR)
+	@echo SUCCESS !
 
 clean: $(BASE_NAME)-clean
 
 %-clean:
-	-rm -f missfont.log $*.ps $*.pdf $*.dvi \
+	-rm -rf $(BUILD_DIR) missfont.log $*.ps $*.pdf $*.dvi \
 		latex-out.log makeindex-out.log bibtex-out.log \
 		hyperxindy.xdy-current mkidxhead.ist-current \
 		$*.bbl $*.aux $*.log $*.toc $*.cb $*.out $*.blg \
@@ -166,7 +179,7 @@ clean: $(BASE_NAME)-clean
 		$*.idx-current $*.bcf-current $*.fls-current \
 		$*.run.xml-current $*.synctex.gz-current \
 		$*.fdb_latexmk-current $*.ps-current \
-		$*.pdf-current $*.dvi-current
+		$*.pdf-current $*.dvi-current 
 
 define SHOW_REPORT =
 	if test -f bibtex-out.log; then \
