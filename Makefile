@@ -1,6 +1,6 @@
 # makefile para a compilacao do documento
 
-BASE_NAME := tese-exemplo
+BASE_NAME := main
 
 LATEX := pdflatex
 #LATEX := lualatex
@@ -26,7 +26,10 @@ MAKEINDEX := makeindex -s mkidxhead.ist -L
 STYLEFILES    := imeusp.sty plainnat-ime.bbx plainnat-ime.cbx
 OTHERTEXFILES := $(wildcard *.tex) $(STYLEFILES)
 BIBFILES      := $(wildcard *.bib)
-IMGFILES      := $(wildcard figuras/*)
+IMGFILES      := $(wildcard figures/*)
+CHAPTERS      := $(wildcard chapters/*)
+TIKZ          := $(wildcard tikz/*)
+
 # Voce pode acrescentar outras dependencias aqui
 MISCFILES     :=
 
@@ -101,7 +104,7 @@ all: $(BASE_NAME).pdf
 # O arquivo pdf final depende dos arquivos de bibliografia/indice, alem
 # dos demais arquivos que compoem o documento e dos arquivos temporarios
 # gerados pelo LaTeX na iteracao anterior que foram modificados
-%.pdf: %.bbl %.ind $(TEX_TEMP_FILES) %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
+%.pdf: %.bbl %.ind $(TEX_TEMP_FILES) %.tex $(BIBFILES) $(TIKZ) $(CHAPTERS) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
 	@if test $(MAKELEVEL) -ge 8; then \
 		$(SHOW_REPORT); \
 		$(SHOW_LOOP_ERROR); \
@@ -121,7 +124,7 @@ all: $(BASE_NAME).pdf
 	fi
 
 # bitex/biber e makeindex/xindy dependem de arquivos gerados pelo LaTeX
-%.idx-current %.bcf-current: %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
+%.idx-current %.bcf-current: %.tex $(BIBFILES) $(IMGFILES) $(TIKZ) $(CHAPTERS) $(OTHERTEXFILES) $(MISCFILES)
 	@echo "       Executando $(LATEX) $(OPTS) $* (iteração auxiliar $(MAKELEVEL))..."
 	@$(RUN_LATEX)
 	@$(REFRESH)
