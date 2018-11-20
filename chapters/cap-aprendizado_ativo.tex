@@ -2,14 +2,19 @@
 \chapter{Aprendizado Ativo}
 \label{cap:aprendizado_ativo}
 
-\todo{Melhorar muito essa parte! Falar das surveys bases que serviu para essa dissertacao e das conferencias recentes!}
-A premissa básica do aprendizado computacional é que se possa aprender a partir dos dados, usando um conjunto de observações e que possamos descobrir uma função não conhecida que explique aquele fenômeno. O fato desta premissa ser tão ampla faz com que seja muito difícil encaixar em uma única estrutura. Por isso, temos muitos paradigmas diferentes que lidam com situações específicas [\cite{abu2012learning}]. Dentro disso, uma das maneiras mais comuns que a literatura parece dividir se dá nos três grandes pilares: aprendizado supervisionado, não supervisionado e semi-supervisionado [\cite{abu2012learning}]. 
 
-Dentro da definição acima, o Aprendizado Ativo aproxima-se ao aprendizado Semi-Supervisionado. Isso porque ambos olham para o mesmo problema: trabalhar com nenhum ou poucos dados rotulados ao passo que seja possível obter um classificador. Essa problemática aparece, na realidade, principalmente quando a rotulação demandaria um alto preço, como um grande esforço humano e/ou de recursos [\cite{settles2012active}]. É difícil, porém, saber exatamente em qual paradigma o Aprendizado Ativo se encaixa. Apesar de alguns trabalhos colocarem o aprendizado ativo como um subgrupo do semi-supervisionado \todo{x,y,z}, dois dos principais trabalhos de Aprendizado Semi-Supervisionado e Aprendizado Ativo colocam ambos paradigmas como paralelos e correlacionados [\cite{settles2012active, zhu2006semi}]. A pesquisa de Olson [\cite{olsson2009literature}], focada em Linguagem Natural, aponta em outra direção, colocando o aprendizado ativo embaixo da estrutura de supervisionado. É difícil, portanto, encontrar um consenso em qual categoria este tipo se encontra.
+Nesse capítulo serão apresentados os fundamentos de aprendizado ativo. É importante citar que muitos dos trabalhos clássicos citados foram descobertos, principalmente, pela revisão da literatura de [\cite{settles2012active, settles2014active}]. Alguns outros trabalhos são também muito importantes nessa discussão, como os de [\cite{olsson2009literature}], focada em Linguagem Natural, o de [\cite{aggarwal2014active}\ e de [\cite{wang2011active}]. A própria revisão de literatura de [\cite{zhu2006semi}] também explica alguns conceitos fundamentais e a relação com o aprendizado semi-supervisionado.
+
+O Aprendizado Ativo recebeu bastante atenção até meados de 2010. Em 2011, por exemplo, tivemos um workshop de aprendizado ativo no ICML (International Conference of Machine Learning). Após essa fase tivemos um período com poucos trabalhos e apenas em 2016 tivemos um outro workshop dentro do I-KNOW (International Conference on Knowledge Technologies and Data-driven Business). Em 2017 e 2018 foi criado o workshop international de aprendizado interativo, que engloba aprendizado ativo e áreas correlacionadas como aprendizado semi-supervisionado.
 
 
 \section{Definição do Aprendizado Ativo}
 \label{sec:definicao}
+
+
+Aprendizado Ativo é a premissa básica do aprendizado computacional é que se possa aprender a partir dos dados, usando um conjunto de observações e que possamos descobrir uma função não conhecida que explique aquele fenômeno. O fato desta premissa ser tão ampla faz com que seja muito difícil encaixar em uma única estrutura. Por isso, temos muitos paradigmas diferentes que lidam com situações específicas [\cite{abu2012learning}]. Dentro disso, uma das maneiras mais comuns que a literatura parece dividir se dá nos três grandes pilares: aprendizado supervisionado, não supervisionado e semi-supervisionado [\cite{abu2012learning}]. 
+
+Dentro da definição acima, o Aprendizado Ativo aproxima-se ao aprendizado Semi-Supervisionado. Isso porque ambos olham para o mesmo problema: trabalhar com nenhum ou poucos dados rotulados ao passo que seja possível obter um classificador. Essa problemática aparece, na realidade, principalmente quando a rotulação demandaria um alto preço, como um grande esforço humano e/ou de recursos [\cite{settles2012active}]. É difícil, porém, saber exatamente em qual paradigma o Aprendizado Ativo se encaixa. Apesar de alguns trabalhos colocarem o aprendizado ativo como um subgrupo do semi-supervisionado \todo{x,y,z}, dois dos principais trabalhos de Aprendizado Semi-Supervisionado e Aprendizado Ativo colocam ambos paradigmas como paralelos e correlacionados [\cite{settles2012active, zhu2006semi}]. A pesquisa de Olson [\cite{olsson2009literature}], focada em Linguagem Natural, aponta em outra direção, colocando o aprendizado ativo embaixo da estrutura de supervisionado. É difícil, portanto, encontrar um consenso em qual categoria este tipo se encontra.
 
 Aprendizado Ativo pode ser caracterizado quando há, de alguma forma, um controle ativo sobre os dados que são selecionados para o treinamento [\cite{cohn1994improving}]. Essa fase é conhecida na literatura como a estratégia de seleção de queries [\cite{settles2014active}]. Os dados selecionados, por sua vez, são postos a um oráculo que pode definir a classe corretamente [\cite{olsson2009literature}]. É importante pontuar que essa seleção ocorre dentro de um cenário específico.. Há, portanto, diferentes cenários e estratégias que podem ser utilizadas [\cite{settles2014active}]. No final o objetivo é que se encontre um classificador com a menor quantidade de dados de treinamento possível e que ainda possua uma boa acurácia [\cite{dasgupta2011two}].
 
@@ -101,14 +106,14 @@ Dos três cenários conhecidos na literatura, o pool-based é o mais utilizado e
   \label{fig:settles_2014_pool}
 \end{figure}
 
-Existem muitos trabalhos práticos que utilizam esse cenário. Por exemplo: \todo{pesquisar por trabalhos que utilizam o cenário pool} textotexto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+Existem muitos trabalhos recentes que utilizam esse cenário. Por exemplo: \todo{citar trabalhos}
 
 
 
 \section{Estratégias de Consulta}
 \label{sec:query_strategy}
 
-Todos os cenários de Aprendizado Ative discutidos antriormente envolvem avaliar a representatividade das amostras a serem escolhidas. Há muitas formas propostas de se fazer isso na literatura e, a seguir, temos as principais delas [\cite{settles2012active}]. É importante notar que em todas as estratégias teremos alguma medida quantificável para selecionar as amostras. Por vezes podemos ter estratégias diferentes que utilizam medidas iguais ou similares.
+Todos os cenários de Aprendizado Ative discutidos anteriormente envolvem avaliar a representatividade das amostras a serem escolhidas. Há muitas formas propostas de se fazer isso na literatura e, a seguir, temos as principais delas [\cite{settles2012active}]. É importante notar que em todas as estratégias teremos alguma medida quantificável para selecionar as amostras. Por vezes podemos ter estratégias diferentes que utilizam medidas iguais ou similares.
 
 
 
@@ -133,17 +138,17 @@ Apesar da ideia ser intuitiva precisamos encontrar uma forma de medir a incertez
 \textbf{Menos Confiante:} nessa medida estamos interessados nos exemplos que são mais prováveis de serem classificados de forma errada. Uma maneira de formular isso seria:
 
 %%EQUACAO ARRUMAR!
-X {LC} =  
+X {LC} =  to do: completar formulas
 
 \textbf{Margem:} similar a medida anterior, a margem utiliza da primeira e segunda maiores probabilidades de uma determinada classe. Intuitivamente, caso a margem fique muito alta, significa que o classificador não possui uma incerteza muito grande em relação à classe adotada. Ao contrário, caso a margem fique estreita, o calssificador não sabe ao certo a qual classe aquela amostra pertecen:
 
 %%EQUACAO ARRUMAR!
-X M = 
+X M = to do: completar formulas
 
 \textbf{Entropia:} leva em consideração todas as probabilidades que uma amostra pode ser classificada. Nesse sentido, a entropia pode ser entendida como uma medida de impureza. 
 
 %%EQUACAO ARRUMAR!
-Formula entropia
+to do: completar formulas
 
 \begin{figure}
   \centering
@@ -195,28 +200,48 @@ X {LC} =
 X {LC} =  
 
 
-\subsection{Explorando a Estrutura dos Dados} 
-\label{sec:explorando_estrutura_dados }
-
-texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto 
-
-
 \subsection{Amostras Incertas vs. Espaço de Hipóteses} 
 \label{sec:minimizing_expected}
 
-texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto 
+Uma das limitações das Amostras Incertas ocorrem no fato de que, como temos poucos dados, é possível que tenhamos um processo de aprendizado míope, principalmente porque não olhamos para todos os exemplos [\cite{settles2014active}]. A parte superior da figura ~\ref{fig:limitations_incertas} ajuda a exemplificar esse problema. Nesse caso, por não termos dados suficientes, o algoritmo falhou em trazer dados que estão no meio dos triângulos. Com isso, tivemos um output extremamente diferente do que o esperado. Esse tipo de caso não é comum, mas ocorre de resultarem em piores resultados do que se fossem amostras randômicas. A parte inferior da figura mostra a estratégia do Espaço de Hipóteses para o mesmo caso. É possível ver que os resultados são muito melhores. 
 
 
-\subsection{Outras Estratégias} 
-\label{sec:minimizing_expected}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/limitations_incertas.png}
+  \caption{Limitações Amostras Incertas [\cite{settles2014active}].}
+  \label{fig:limitations_incertas}
+\end{figure}
 
-texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto 
+Uma outra limitação, tanto das Amostras Incertas quanto no Espaço de Hipóteses, ocorre no fato de que elas são muito suscetíveis a outliers. Isso ocorre porque, nas duas estratégias, as amostras são medidas individualmente [\cite{settles2014active}]. Ou seja, não é levado em consideração a distribuição delas. A figura ~\ref{fig:limitations_outliers} ajuda a sintetizar esse caso. Nela o exemplo A seria o escolhido pois está exatamente na linha de divisão entre as duas classes. Entretanto, por ser um outlier, não é um exemplo realmente representativo. 
 
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{figures/limitations_outliers.png}
+  \caption{Limitações com Outliers [\cite{settles2014active}].}
+  \label{fig:limitations_outliers}
+\end{figure}
+
+ \subsection{Explorando a Estrutura dos Dados} 
+\label{sec:explorando_estrutura_dados }
+
+Uma das maneiras encontradas para resolver a limitação dos outliers é explorar a estrutura dos dados. Uma das formais interessantes de se fazer isso é utilizando a intersecção do Aprendizado Ativo com o Aprendizado Semi-Supervisionado. Podemos, por exemplo, utilizar a estrutura dos dados e encontrar clusters através de alguma medida de similaridade [\cite{saito2014active, dasgupta2011two}]. Selecionamos algumas amostras, como os centroides ou o mais informativos, e pedimos para o oráculo categorizar corretamente, iniciando, assim, o ciclo do aprendizado ativo. 
+
+Há, porém, alguns problemas na estratégia. Não temos um número óbvio de clusters. Também podemos ter vários níveis de granularidade e, o pior dos casos, os clusters podem não representar as categorias corretas do dataset [\cite{dasgupta2011two, settles2014active}].  A figura XXX mostra bem essa ideia \todo{criar toy example}.
+
+\section{Limitações do Modelo Tradicional e Variações do Framework}
+\label{sec:limitacoes_variacoes}
+
+O aprendizado ativo tem como principal objetivo diminuir o esforço gasto na rotulação de amostras tendo, como resultado, um bom classificador. Há outras técnicas que são correlatas a essa ideia, como o aprendizado semi-supervisionado [\cite{zhu2006semi}], que utiliza da própria estrutura dos dados para re-treinar o classificador. Outra técnica interessante é o transfer learning, que tem como objetivo passar um conhecimento prévio de um problema já resolvido para algum outro similar [\todo{ver uma referencia}]. Além desses que foram citados podem existir diversas variações [\todo{procurar por referencias}]. A diferença básica é que no aprendizado ativo temos a interação de um oráculo, sendo na maioria das vezes um humano. 
 
 
+Apesar dessa ideia ser muito interessante, principalmente quando temos um domínio que requer profissionais extremamente especializados para categorizar as amostras, o oráculo ainda é utilizado de forma muito limitada no framework clássico [\cite{seifert2010user}]. Nele sua utilização se restringe em aceitar/corrigir as classes dadas pelo classificador. Há uma ideia em tentar dar ao oráculo outros papéis. Na realidade, existe um grande interesse em como incorporar mais conhecimento humano dentro dessa estrutura [\cite{settles2014active}]. 
 
-\section{Áreas Correlatas}
-\label{sec:other_areas}
+O trabalho de [\cite{castro2009human}] foi um dos primeiros a tentar relacionar, de forma quantitativa, o aprendizado ativo com a ciência cognitiva. Nesse caso o problema era conseguir identificar duas classes de ovos alienígenas que se diferenciavam pela forma. Enquanto o primeiro grupo poderia poderia escolher quais ovos teriamn  informações a respeito, o segundo apenas recebia as imagens com a respectiva classe. O estudo mostrou que os resultados foram melhores para o grupo que pôde escolher ativamente as amostras. Um estudo parecido foi feito por [\cite{markant2014better}] e, para determinados casos, confirmou esse cenário. 
 
-texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto 
+O interesse em unir o conhecimento humano, incorporando-o no loop de aprendizado, continua em aberto. Um estudo recente [\cite{kottke2018other}] teve como objetivo mudar a posição do humano de ser um especialista em categorizar amostras para ser também um especialista em selecionar. No estudo foi possível demonstrar resultados positivos, onde o aprendizado computacional pode se beneficiar com a interação humana. Outros estudos [\cite{calma2016active}] mostram que esse é um desafio atual. Inclusive, há uma linha de pesquisa interessante que pretende fazer isso com o apoio de análises visuais, como a utilização de grafos e projeções em 2D [\cite{yang2018visually, bernard2018comparing, weigl2016mapview}].
+
+%% comentar aqui o rtablaho do settles com NLP
+
+%% falar quer e exclusivamente nos casos onde termos a necessidade de um especialista. Lembrar do trabalho do Baum que nao deu certo (exemplos sinteticos que nao faizam nenhum sentudo!)
