@@ -2,37 +2,107 @@
 \chapter{Descrição do Problema e Proposta}
 \label{cap:Proposta}
 
-O estudo da planctologia é de grande importância na comunidade científica, principalmente na oceanografia. O nome plâncton vem do Grego planktos e significa errante, que vaga ou flutua. Caracteriza-se, assim, por organismos planctônicos os que não possuem o poder de locomoção suficiente para evitar o transporte passivo pelas massas de água [\cite{calazans2011organismos}].  A importância do estudo dessas criaturas se dá não somente por serem responsáveis por cerca de 45\% do oxigênio produzido mundialmente [\cite{brierleyplankton}],  através da fotossíntese do fitoplâncton, mas também pela grande diversidade de classes e de características como forma, tamanho e até da natureza do local de coleta [\cite{calazans2011organismos}]. 
+O problema que estamos tratando, classificação de imagens de plâncton, enquadra-se na situação de dados não rotulados abundantes e com elevado custo de rotulação. Dado essa situação, o objetivo deste trabalho é o desenvolvimento de métodos para a rotulação e classificação rápida dessas imagens, a fim de que estudos posteriores, dependentes da classificação, tornem-se viáveis. 
 
-O plâncton é taxonomicamente diverso [\cite{brierleyplankton}]. Dentre os grupos temos o fitoplâncton (plantas), o zooplâncton (animais), o bacterioplâncton (bactérias e algas cianobactérias) e o virioplâncton (vírus aquáticos). Embora possam existir tamanhos maiores, a maioria deles são muito pequenos, variando de alguns micrômetros a 5 mm de comprimento. Além disso, existem muitas maneiras de classificar esses organismos, como em função do seu tamanho ou aspectos ecológicos [\cite{calazans2011organismos}].
+Como foi visto no capítulo anterior, o aprendizado ativo poderia ser uma abordagem a ser utilizada para rotular um grande conjunto de amostras, com a ajuda de um especialista. Neste processo, o objetivo é a minimização do esforço de interação do usuário. Em seguida, uma vez em posse de amostras rotuladas, um classificafor pode ser treinado e utilizado para automaticamente classificar o restante das amostras não rotuladas.
+
+Também conforme comentado no capítulo anterior, pesquisas recentes relacionadas à interação de usuários na tarefa de rotulação indicam as limitações do aprendizado ativo clássico. Nesse, o especialista tem uma atuação limitada de apenas confirmar ou corrigir o rótulo atribuído pelo algoritmo a algumas das amostras. Uma forma para contornar essas limitações são abordagens que colocam o especialista em um papel mais central, no qual= sua atuação passa a incluir a possibilidade de não só corrigir ou rotular amostras selecionadas pelo algoritmo, mas também participar no processo de seleção das amostras a serem rotuladas.
+
+A proposta consiste em definirmos formas de interação do usuário, definir formas de usar a informação proveniente dessas interações, e avaliar a efetividade desse uso. Essas etapas estão descritas a seguir. Ao final descrevemos também o conjunto de dados e os procedimentos práticos que serão utilizados na parte experimental do trabalho.
 
 
-A amostragem de criaturas marítimas é datada desde de 1829, quando Thompson utilizou uma rede para coletar larvas de crustáceos e de cracas [\cite{brierleyplankton}], mas foi Victor Hensen, em 1887, o primeiro pesquisador a desenvolver, de fato, um sistema para coleta de amostragens de plânctons de forma quantitativa [\cite{benfield2007rapid, wiebe2003hensen, allen1919contribution}]. Naquela época estavam interessados em responder três questões fundamentais: i) quais organismos planctônicos estão presentes no mar? ii) quantos de cada tipo estão presentes? e iii) como a composição dos plânctons muda com o passar do tempo?  [\cite{benfield2007rapid}]. Essas questões continuam atuais e graças ao avanço de sistemas e equipamentos de coleta, assim como de técnicas computacionais, há um grande esforço científico para responder à essas perguntas.
+\section{Estratégia de Interação}
+\label{sec:estategia_interacao}
+
+Duas ideias de interação ativa por parte de usuários estão  sendo consideradas nesta proposta. Como elas ainda não estão suficientemente amadurecidas, é possível que a estratégia final seja uma combinação delas.
+
+\subsection{Interação Sobre o Espaço de Projeções}
+\label{sec:espaco_projecoes}
+
+Na classificação de imagens, tipicamente são extraídas um conjunto de características das imagens e elas são utilizadas pelos classificadores. No caso de plâncton, características explicitamente extraídas em geral estão relacionados à forma e textura dos organismos. Mais recentemente, com a popularização de redes neurais profundas e, especificamente, das redes convolucionais no caso de imagens, redes pré-treinadas em outros domínios de aplicação podem ser utilizadas como extratores de características. Isto é, dada uma rede pré-treinada, passa-se uma imagem para a rede e extrai-se os valores dessa rede em alguma camada de ativação. O conjunto de valores dessa camada é utilizada como uma representação da imagem de entrada.
+
+Sejam características extraídas explicitamente ou implicitamente, elas podem ser representadas por um vetor em $\mathbb{R}^n$. A visualização de pontos em espaços de dimensão alta não é possível. Portanto, uma técnica comumente utilizada são as projeções desses pontos sobre o espaço 2D.
+
+Existem diversos algoritmos que realizam essas projeções, também conhecidas por algoritmos de redução de dimensionalidade.= Várias delas são desenhadas para preservar certas propriedades dos dados no espaço original. Por exemplo, ...
+
+(o t-SNE por exemplo, se não me engano, preserva a vizinhança; ou seja, os pontos mais próximos no espaço original aparecem como os mais próximos na projeção, embora a distância relativa não seja preservada).
+
+As interações neste caso consistiriam de diferentes formas= do usuário interagir com os pontos no espaço 2D. Deve-se lembrar que cada ponto corresponde a uma imagem. Assim, durante a interação o usuário teria a possibildiade de explorar a estrutura de organização do conjunto de pontos e as imagens associadas a subconjuntos de pontos. Por exemplo, supondo que existam agrupamentos bem definidos na projeção, o usuário poderia inspecionar imagens de um desses agrupamentos e rapidamente determinar a classe predominante no grupo, excluindo apenas as que são de classes distintas.
+
+À medida que mais e mais imagens são rotuladas, esses mapas de projeção viriam também acompanhados de cores associados aos pontos já rotulados. Isto poderia ser explorado pelo usuário para rotular amostras em regiões mais críticas (presença de amostras de classes distintass).
 
 
-Hoje existem diversas maneiras de se fazer a amostragem de plânctons como, através de garrafas, redes, bombas de sucção e sistemas ópticos [\cite{calazans2011organismos}]. A figura ~\ref{fig:amostragem_planctons} mostra o exemplo de uma rede planctônica. É interessante notar que nos últimos anos houve uma proliferação em sistemas ópticos. Esses sistemas permitem, por exemplo, que algumas espécies de planctôns, por serem muitos delicadas, possam ter suas imagens capturadas, o que nem sempre é possível com outras técnicas [\cite{benfield2007rapid}].
+
+
+\subsection{Interação Sobre Galeria de Imagens} 
+\label{sec:galeria_imagens}
+
+Para rotular uma imagem, o especialista precisa ver o organismo presente na imagem. Dado que estamos pressupondo uma representação  das imagens como pontos no $R^
+n$, podemos usar métricas de similaridade para selecionar grupos de imagens similares segundo essa métrica e exibir múltiplas imagens de um grupo simultaneamente.
+ 
+Nesta situação, supondo-se que a maior parte dos organismos são de uma mesma classe, em poucas interações o especialista pode corrigir os rótulos errados e confirmar os demais como rótulos corretos.
+
+
+\section{Uso das Informações Provenientes da Interação}
+\label{sec:uso_das_informacoes_interacao}
+
+A ideia básica do aprendizado ativo de iterar ciclos continua presente. A diferença básica é que o especialista poderá participar de forma mais ativa e selecionar as amostras a serem rotuladas.
+
+A partir da definição de como ocorrerá essa interação, será possível também definir quais tipos de informação estarão disponíveis para o algoritmo gerar um novo classificador melhorado.
+
+
+
+\section{Avaliação do Método}
+\label{sec:avaliação do método}
+
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto 
+
+\section{Considerações sobre a parte experimental}
+\label{sec:consideracoes_parte_experimental}
+
+
+\subsection{Base de Dados que Poderão ser Usados} 
+\label{sec:base_usadas}
+
+Neste trabalho teremos três bases de dados disponíveis. As especificações de cada uma estão a seguir.
+
+\textbf{LAPS}
+
+Este dataset foi desenvolvido pelo LAPS\footnote{LAPS: Laboratório de Sistemas Planctônicos (LAPS) do Departamento de Oceanografia Biológica, pertencente ao Instituto Oceanográfico da Universidade de São Paulo (IOUSP)} e contém 5.198 imagens de zooplanctons, divididas em 20 classes.
+
+\textbf{NDSB}
+
+Temos cerca de 30.000 imagens de zooplanctons, divididas em 121 classes, coletadas pelo Centro de Ciências Marinhas Hatfield da Universidade Estadual do Oregon. A fitura ~\ref{fig:ndsb} mostra alguns exemplos das imagens.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{figures/ndsb_exemplos.png}
+  \caption{Exemplos de amostras do dataset NDSB}
+  \label{fig:ndsb}
+\end{figure}
+
+\textbf{Japan}
+Neste dataset temos 32.835 imagens divididas em 23 classes. A figura ~\ref{fig:japan} mostra alguns exemplos das imagens.
 
 
 \begin{figure}
   \centering
-  \includegraphics[width=.8\textwidth]{figures/amostragem_planctons.png}
-  \caption{Rede Planctônica (Calazans, 2011)}
-  \label{fig:amostragem_planctons}
+  \includegraphics[width=1.1\textwidth]{figures/japan_exemplos.png}
+  \caption{Exemplos de amostras do dataset Japan}
+  \label{fig:japan}
 \end{figure}
 
 
 
-\section{Reconhecimento das classes de Plânctons}
-\label{sec:reconhecimento_planctons}
+
+\subsection{Procedimento Prático} 
+\label{sec:procedimento_pratico}
+
+As amostras no datasets acima listados são rotulados. Desta forma, no caso do aprendizado ativo podemos facilmente simular o oráculo. texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto          
 
 
-Após a fase de coleta, especificamente através de sistemas ópticos, tem-se um conjunto de imagens de plânctons que não possuem rótulos. Essa categorização é importante pois é através dela que é possível utilizar do aprendizado computacional e gerar um classificador capaz de automatizar a rotulação de novas imagens. Esse é um problema antigo no caso dos plânctons [\cite{jeffries1980computer, jeffries1984automated, berman1990image, tang1998automatic}]   e ainda não totalmente resolvido[\cite{luo2003learning, davis2004real, grosjean2004enumeration, luo2005active, hu2005automatic, blaschko2005automatic, hu2006accurate, sosik2007automated, bell2008assessment, soh2008segmentation, al2016plankton, luo2017automated, al2018intelligent}].
 
-O grande desafio é que demanda-se muito tempo e pessoas extremamente especializadas para cumprir essa tarefa, já que elas possuem, por exemplo, uma grande variedade de classes, formas e tamanhos. Como resultado, normalmente temos uma lacuna muito grande entre o tempo de coleta das imagens e a rotulação, assim como o possível erro humano na correta categorização das espécies. Somado a isso, muitas vezes, já temos um novo equipamento que possuem fotos com características diferentes das anteriores. Ou seja, apesar de todo o avanço que tivemos com equipamentos e técnicas, o problema de categorização persiste desde 1800, quando Thompson e Hensen iniciaram a coleta dessas criaturas [\cite{brierleyplankton, benfield2007rapid}]. 
-
-É interessante notar que, caso tivéssemos todas as imagens com rótulos, nosso problema se reduziria em criar um classificador capaz de generalizar para as diversas taxonomias de plânctons possíveis. No entanto, nosso problema começa em um passo anterior: precisamos de dados rotulados para, então, pensarmos no classificador. É necessário, portanto, encontrar uma maneira de reduzir o esforço gasto na rotulação de amostras, obtendo, como resultado, um classificador de acurácia equivalente ou melhor do que uma abordagem padrão, com todos os dados rotulados. Como visto no capítulo dois, uma das abordagens conhecidas para isso é através do Aprendizado Ativo. 
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Aprendizado Ativo Integrado com o Conhecimento Humano Especializado}
 \label{sec:aprendizado_ativo_conhecimento_humano}
 
@@ -59,28 +129,3 @@ A maneira pela qual será possível escolher os exemplos será através da proje
 
 %\section{Projeção do Espaço de Features}
 %\label{sec:projecao_espaco_features}
-
-\section{Base de Dados}
-\label{sec:base_de_dados}
-
-Neste trabalho teremos quatro bases de dados disponíveis. Todas 
-
-
-\subsection{LAPS} 
-\label{sec:basededados_laps}
-
-Este dataset foi desenvolvido pelo LAPS,  (Laboratório de Sistemas Planctônicos do Departamento de Ocenanografia Biológica, do Instituto Ocenanogr[afico da Universidade de São Paulo]
-XX classes de zooplanctons, onde todas as imagens são
-
-
-\subsection{NDSB} 
-\label{sec:basededados_ndsb}
-
-% \cite{cowen2015planktonset}
-
-
-\subsection{Japan} 
-\label{sec:basededados_japan}
-
-
-

@@ -2,25 +2,63 @@
 \chapter{Aprendizado Ativo}
 \label{cap:aprendizado_ativo}
 
-
 Nesse capítulo serão apresentados os fundamentos de aprendizado ativo. É importante citar que muitos dos trabalhos clássicos citados foram descobertos, principalmente, pela revisão da literatura de [\cite{settles2012active, settles2014active}]. Alguns outros trabalhos são também muito importantes nessa discussão, como os de [\cite{olsson2009literature}], focada em Linguagem Natural, o de [\cite{aggarwal2014active}\ e de [\cite{wang2011active}]. A própria revisão de literatura de [\cite{zhu2006semi}] também explica alguns conceitos fundamentais e a relação com o aprendizado semi-supervisionado.
 
 O Aprendizado Ativo recebeu bastante atenção até meados de 2010. Em 2011, por exemplo, tivemos um workshop de aprendizado ativo no ICML (International Conference of Machine Learning). Após essa fase tivemos um período com poucos trabalhos e apenas em 2016 tivemos um outro workshop dentro do I-KNOW (International Conference on Knowledge Technologies and Data-driven Business). Em 2017 e 2018 foi criado o workshop international de aprendizado interativo, que engloba aprendizado ativo e áreas correlacionadas como aprendizado semi-supervisionado.
 
+É importante notar que é difícil colocar o aprendizado ativo em algum framework do aprendizado computacional, normalmente dividido em aprendizado supervisionado, não supervisionado  e por reforço. Primeiro porque o aprendizado computacional, por si só, tem um objetivo muito amplo e é complicado encaixar diferentes frameworks em apenas essas três categorias [\cite{abu2012learning}]. Em segunda lugar porque a própria literatura não possui um consenso a respeito do aprendizado ativo. Por exemplo, [\cite{settles2012active, zhu2006semi}] colocam-o como um framework relacionado ao semi-supervisionado, mas não dentro dele. Outros trabalhos, entretanto, colocam como um subgrupo do aprendizado semi-supervisionado. E há ainda outros, como a pesquisa de Olson [\cite{olsson2009literature}], focada em Linguagem Natural, que o classifica como sendo da estrutura de supervisionado. 
 
 \section{Definição do Aprendizado Ativo}
 \label{sec:definicao}
 
+O aprendizado supervisionado tradicional pressupõe que existe um grande conjunto de amostras pré-rotuladas para serem utilizadas no treinamento. Dessa forma, é induzido uma hipótese sobre esses dados, resultando em um classificador [\cite{settles2014active}]. Em contraste a esse aprendizado, também chamado de aprendizado passivo, o aprendizado ativo  é uma técnica que nasce quando não temos dados anotados suficiente e quando o custo envolvido para essa rotulação é proibitivo. A ideia central do aprendizado ativo é que o algoritmo selecione as amostras mais importantes para o treinamento. 
 
-Aprendizado Ativo é a premissa básica do aprendizado computacional é que se possa aprender a partir dos dados, usando um conjunto de observações e que possamos descobrir uma função não conhecida que explique aquele fenômeno. O fato desta premissa ser tão ampla faz com que seja muito difícil encaixar em uma única estrutura. Por isso, temos muitos paradigmas diferentes que lidam com situações específicas [\cite{abu2012learning}]. Dentro disso, uma das maneiras mais comuns que a literatura parece dividir se dá nos três grandes pilares: aprendizado supervisionado, não supervisionado e semi-supervisionado [\cite{abu2012learning}]. 
 
-Dentro da definição acima, o Aprendizado Ativo aproxima-se ao aprendizado Semi-Supervisionado. Isso porque ambos olham para o mesmo problema: trabalhar com nenhum ou poucos dados rotulados ao passo que seja possível obter um classificador. Essa problemática aparece, na realidade, principalmente quando a rotulação demandaria um alto preço, como um grande esforço humano e/ou de recursos [\cite{settles2012active}]. É difícil, porém, saber exatamente em qual paradigma o Aprendizado Ativo se encaixa. Apesar de alguns trabalhos colocarem o aprendizado ativo como um subgrupo do semi-supervisionado \todo{x,y,z}, dois dos principais trabalhos de Aprendizado Semi-Supervisionado e Aprendizado Ativo colocam ambos paradigmas como paralelos e correlacionados [\cite{settles2012active, zhu2006semi}]. A pesquisa de Olson [\cite{olsson2009literature}], focada em Linguagem Natural, aponta em outra direção, colocando o aprendizado ativo embaixo da estrutura de supervisionado. É difícil, portanto, encontrar um consenso em qual categoria este tipo se encontra.
+A origem desse paradigma se iniciou com trabalhos que visavam exclusivamente a seleção de amostras mais informativas [\cite{angluin1988queries, baum1992query, atlas1990training}]. Em 1994 o trabalho de [\cite{cohn1994improving}] explicitou o termo e o framework de Aprendizado Ativo e, a partir deste momento, houveram melhorias e avanços nessa área de pesquisa. 
 
-Aprendizado Ativo pode ser caracterizado quando há, de alguma forma, um controle ativo sobre os dados que são selecionados para o treinamento [\cite{cohn1994improving}]. Essa fase é conhecida na literatura como a estratégia de seleção de queries [\cite{settles2014active}]. Os dados selecionados, por sua vez, são postos a um oráculo que pode definir a classe corretamente [\cite{olsson2009literature}]. É importante pontuar que essa seleção ocorre dentro de um cenário específico.. Há, portanto, diferentes cenários e estratégias que podem ser utilizadas [\cite{settles2014active}]. No final o objetivo é que se encontre um classificador com a menor quantidade de dados de treinamento possível e que ainda possua uma boa acurácia [\cite{dasgupta2011two}].
 
-Persello e Bruzone [\cite{persello2012active}] definem, em seu trabalho, esse tipo de aprendizado através de uma quíntupla (G, Q, S, T, U), que possui os seguintes elementos: um classificador (G), um framework de seleção de query (Q), um oráculo (S), uma base de treinamento (T) e uma base de dados sem classes (U). \todo{colocar algoritmo do paper}
+Na prática, a diferença fundamental é que o primeiro requer que o especialista rotule um grande volume de amostras indiferentemente de eles serem relevantes ou não no processo de aprendizado. Já no aprendizado ativo o algoritmo determina quais amostras podem ser mais úteis para o aprendizado e solicita apenas a rotulação das amostras selecionadas. 
 
-\section{Cenários}
+\cite{persello2012active} definem, em seu trabalho, esse tipo de paradigma através de uma quíntupla (G,Q,S,T,U):
+\newline
+\newline
+~~~ G - um classificador inicial 
+\newline
+~~~ Q - uma política de seleção de amostras a ser enviada ao oráculo (query)
+\newline 
+~~~ S - um oráculo
+\newline 
+~~~ T - um conjunto de amostras rotuladas
+\newline 
+~~~ U - um conjunto de amostras não rotuladas
+
+
+A figura ~\ref{fig:framework_AL_classico_etapa_inicial} mostra o processo inicial, onde temos uma grande base de amostras não rotuladas U. Note que três amostras são selecionadas e rotuladas corretamente, gerando o conjunto inicial T. Após isso, essas amostras servem como base de treinamento e geramos um classificador. A partir disso é possível iniciar o processo interativo do aprendizado ativo.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.9\textwidth]{figures/Framework_processo_inicial.png}
+  \caption{Etapa Inicial do Framework de Aprendizado Ativo}
+  \label{fig:framework_AL_classico_etapa_inicial}
+\end{figure}
+
+
+No processo interativo já temos um classificador e um conjunto de amostras pré-rotuladas. Assim iniciamos da seguinte forma, conforme a figura ~\ref{fig:framework_AL_classico}: uma política Q seleciona um conjunto de amostras de U (1 e 2) para ser classificada por G (3). Essas amostrsas são levadas ao oráculo que aprova ou corrige a classificação de G (4). Após isso, essa amostra é incluída em T e o classificador pode ser retreinado, finalizando o ciclo (5). Esse processo pode ser repetido várias vezes até um critério de parada, como por decisão do oráculo, ou por não ter mais dados disponíveis em U, por exemplo. 
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/Framework_Active_Learning_Classico_v2.png}
+  \caption{Framework Clássico de Aprendizado Ativo}
+  \label{fig:framework_AL_classico}
+\end{figure}
+
+
+O aprendizado ativo costuma ser descrito na literatura em duas grandes etapas: i) cenários e ii) estratégia de seleção e organização das amostras [\cite{settles2014active}]. A etapa de seleção de cenários é a forma pela qual o algoritmo tem acesso aos dados. Existem diversos cenários que podem ser usados mas, independente de qual seja o escolhido, deve-se selecionar qual amostra será enviada para o oráculo através de uma função de utilidade [\cite{olsson2009literature, dasgupta2011two}]. A seguir temos a descrição detalhada dos cenários e estratégias de seleção. 
+
+
+\section{Cenários do Aprendizado Ativo}
 \label{sec:cenarios}
 
 Existem alguns cenários onde o Aprendizado Ativo poderá organizar os dados para, então, fazer a seleção de queries. Dentro desses, os três principais que podem ser considerados na literatura são: (i) membership query synthesis, (ii) stream-based selective sampling e (iii) pool-based sampling \cite{settles2014active}. A figura ~\ref{fig:ActiveLearningScenarios} abaixo sintetiza a ideia.
@@ -92,8 +130,6 @@ Há algumas situações específicas pelas quais é interessante utilizar o cen�
   \label{fig:settles_2014_selective_sampling}
 \end{figure}
 
-
-
 \subsection{Pool-based Sampling}
 \label{sec:cenarios_pool}
 
@@ -106,11 +142,11 @@ Dos três cenários conhecidos na literatura, o pool-based é o mais utilizado e
   \label{fig:settles_2014_pool}
 \end{figure}
 
-Existem muitos trabalhos recentes que utilizam esse cenário. Por exemplo: \todo{citar trabalhos}
+%Existem muitos trabalhos recentes que utilizam esse cenário. Por exemplo: \todo{citar trabalhos}
 
 
 
-\section{Estratégias de Consulta}
+\section{Estratégia de Seleção e Organização das Amostras}
 \label{sec:query_strategy}
 
 Todos os cenários de Aprendizado Ative discutidos anteriormente envolvem avaliar a representatividade das amostras a serem escolhidas. Há muitas formas propostas de se fazer isso na literatura e, a seguir, temos as principais delas [\cite{settles2012active}]. É importante notar que em todas as estratégias teremos alguma medida quantificável para selecionar as amostras. Por vezes podemos ter estratégias diferentes que utilizam medidas iguais ou similares.
@@ -137,18 +173,28 @@ Apesar da ideia ser intuitiva precisamos encontrar uma forma de medir a incertez
 
 \textbf{Menos Confiante:} nessa medida estamos interessados nos exemplos que são mais prováveis de serem classificados de forma errada. Uma maneira de formular isso seria:
 
-%%EQUACAO ARRUMAR!
-X {LC} =  to do: completar formulas
+\begin{align*}
+\textbf{X}^*_{LC} = &\arg\min_{x} P_{\theta}  (\hat{y}\lvert x)\\
+&\arg\max_{x} 1 - P_{\theta}  (\hat{y}\lvert x)\\
+\end{align*}
 
 \textbf{Margem:} similar a medida anterior, a margem utiliza da primeira e segunda maiores probabilidades de uma determinada classe. Intuitivamente, caso a margem fique muito alta, significa que o classificador não possui uma incerteza muito grande em relação à classe adotada. Ao contrário, caso a margem fique estreita, o calssificador não sabe ao certo a qual classe aquela amostra pertecen:
 
-%%EQUACAO ARRUMAR!
-X M = to do: completar formulas
+\begin{align*}
+\textbf{X}^*_{M} = &\arg\min_{x}[ P_{\theta} (\hat{y_{1}}\lvert x) - P_{\theta} (\hat{y_{2}}\lvert x)]\\
+&\arg\max_{x}[ P_{\theta} (\hat{y_{2}}\lvert x) - P_{\theta} (\hat{y_{1}}\lvert x)]\\
+\end{align*}
 
 \textbf{Entropia:} leva em consideração todas as probabilidades que uma amostra pode ser classificada. Nesse sentido, a entropia pode ser entendida como uma medida de impureza. 
 
-%%EQUACAO ARRUMAR!
-to do: completar formulas
+\begin{align*}
+\textbf{X}^*_{H} = &\arg\max_{x} H_{\theta}  (Y\lvert x)\\
+&\arg\max_{x} \sum_{y} P_{\theta}  (y\lvert x) \log_{} P_{\theta}  (y\lvert x)\\
+\end{align*}
+
+
+
+
 
 \begin{figure}
   \centering
@@ -160,7 +206,6 @@ to do: completar formulas
 
 
 Das três medidas acima, é importante notar que a primeira leva em consideração apenas a maior probabilidade, enquanto a segunda apenas as duas maiores. A última, por outro lado, considera todas as possíveis classificações de uma amostra. Por isso mesmo é a mais comumente utilizada [\cite{settles2014active}]. Uma forma forma de comparar as três medidas pode ser vista na figura ~\ref{fig:settles_2014_uncertainty_medidas} abaixo. Nela é possível ver o resultado das funções de utilidade como função da probabilidade de determinada classificação. Assim, percebemos em um exemplo dicôtomico, na parte superior, que sempre que a probabilidade da classificação for 0.5, teremos o maior resultado de utilidade daquela medida. Da mesma forma, na parte inferior, em um exemplo com três possíveis classificações, percebemos a mesma coisa. 
-\todo{Fal Limitacoes}
 
 
 \subsection{Espaço de Hipóteses} 
@@ -191,13 +236,15 @@ Assim como ocorre na estratégia anterior, é necessário que tenhamos como medi
 
 \textbf{Entropia por Voto:} a abordagem sugerida por [\cite{dagan1995committee}] considera todas as possíveis classificações e o número de votos que receberam. 
 
-%%EQUACAO ARRUMAR!
-X {LC} =  
+\begin{align*}
+\textbf{X}^*_{SVE} = &\arg\max_{x} \sum_{y} P_{C}  (y\lvert x) \log_{} P_{C}  (y\lvert x)\\
+\end{align*}
 
 \textbf{Divergência de Kullback-Leibler (KL):} a abordagem sugerida por [\cite{mccallumzy1998employing}] utiliza de uma abordagem probabiblistica, vinda da divergência de KL.
 
-%%EQUACAO ARRUMAR!
-X {LC} =  
+\begin{align*}
+\textbf{X}^*_{KL} = &\arg\max_{x} \sum_{\theta} KL(  P_{\theta} (Y\lvert x) \lvert\lvert P_{C} (Y\lvert x))\\
+\end{align*}
 
 
 \subsection{Amostras Incertas vs. Espaço de Hipóteses} 
@@ -230,10 +277,10 @@ Uma das maneiras encontradas para resolver a limitação dos outliers é explora
 
 Há, porém, alguns problemas na estratégia. Não temos um número óbvio de clusters. Também podemos ter vários níveis de granularidade e, o pior dos casos, os clusters podem não representar as categorias corretas do dataset [\cite{dasgupta2011two, settles2014active}].  A figura XXX mostra bem essa ideia \todo{criar toy example}.
 
-\section{Limitações do Modelo Tradicional e Variações do Framework}
-\label{sec:limitacoes_variacoes}
+\section{Aprendizado Ativo com Participação Ativa do Usuário}
+\label{sec:aprendizado_ativo_variacoes}
 
-O aprendizado ativo tem como principal objetivo diminuir o esforço gasto na rotulação de amostras tendo, como resultado, um bom classificador. Há outras técnicas que são correlatas a essa ideia, como o aprendizado semi-supervisionado [\cite{zhu2006semi}], que utiliza da própria estrutura dos dados para re-treinar o classificador. Outra técnica interessante é o transfer learning, que tem como objetivo passar um conhecimento prévio de um problema já resolvido para algum outro similar [\todo{ver uma referencia}]. Além desses que foram citados podem existir diversas variações [\todo{procurar por referencias}]. A diferença básica é que no aprendizado ativo temos a interação de um oráculo, sendo na maioria das vezes um humano. 
+O aprendizado ativo tem como principal objetivo diminuir o esforço gasto na rotulação de amostras tendo, como resultado, um bom classificador. Há outras técnicas que são correlatas a essa ideia, como o aprendizado semi-supervisionado [\cite{zhu2006semi}], que utiliza da própria estrutura dos dados para re-treinar o classificador. Outra técnica interessante é o transfer learning, que tem como objetivo passar um conhecimento prévio de um problema já resolvido para algum outro similar [\todo{colocar referencias}]. Além desses que foram citados podem existir diversas variações [\todo{colocar referencias}]. A diferença básica é que no aprendizado ativo temos a interação de um oráculo, sendo na maioria das vezes um humano. 
 
 
 Apesar dessa ideia ser muito interessante, principalmente quando temos um domínio que requer profissionais extremamente especializados para categorizar as amostras, o oráculo ainda é utilizado de forma muito limitada no framework clássico [\cite{seifert2010user}]. Nele sua utilização se restringe em aceitar/corrigir as classes dadas pelo classificador. Há uma ideia em tentar dar ao oráculo outros papéis. Na realidade, existe um grande interesse em como incorporar mais conhecimento humano dentro dessa estrutura [\cite{settles2014active}]. 

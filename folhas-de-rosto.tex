@@ -69,13 +69,13 @@
 % automaticamente a referência para o próprio documento, conforme as normas
 % sugeridas da USP
 \begin{resumo}{port}
-Elemento obrigatório, constituído de uma sequência de frases concisas e
-objetivas, em forma de texto.  Deve apresentar os objetivos, métodos empregados,
-resultados e conclusões.  O resumo deve ser redigido em parágrafo único, conter
-no máximo 500 palavras e ser seguido dos termos representativos do conteúdo do
-trabalho (palavras-chave). Deve ser precedido da referência do documento.
-texto texto.
+
+Plâncton são organismos microscópicos que constituem a base da cadeia alimentar de ecossistemas aquáticos, são responsáveis por cerca de 45\% do oxigênio produzido, e têm papel fundamental no ciclo do carbono. Hoje em dia, a amostragem desses organismos se dá principalmente através de equipamentos ópticos que produzem uma quantidade enorme de imagens. Uma consequente importante tarefa é a identificação desses organismos nas imagens, tarefa comumente conhecida como classificação. Técnicas de aprendizado de máquina são geralmente empregadas para, dadas amostras de instâncias previamente classificadas, os chamados dados de treinamento, treinar um classificador que pode então ser utilizado para rotular o restante das instâncias. No entanto, lotes de imagens coletadas em diferentes momentos, locais, ou com equipamentos distintos tendem a apresentar características distintas. Como consequência, o trabalho de preparação dos dados de treinamento precisa ser repetido a cada nova situação. Esse trabalho é extremamente demorado, além de não aproveitar o esforço previamente empregado pelos especialistas para rotular instâncias de outros lotes. Aprendizado ativo é uma abordagem no campo de aprendizado de máquina no qual os algoritmos de aprendizado tem autonomia para escolher qual instância pode proporcionar informações mais relevantes para melhorar o desempenho do classificador a ser gerado. Desta forma, é esperado que o processo de treinamento comece com poucas instâncias rotuladas e ao longo do treinamento o próprio algoritmo solicite o rótulo de algumas poucas instâncias adicionais, não requerendo a preparação prévia de um grande conjunto de treinamento. A proposta deste projeto de pesquisa é investigar o uso de aprendizado ativo na tarefa de classificação de imagens de plâncton. No modelo clássico de aprendizado ativo o especialista participa passivamente apenas respondendo às perguntas da máquina. Variantes mais recentes dessa abordagem estão evoluindo para uma formulação na qual o especialista tem uma participação mais ativa. Um dos pontos que pretendemos investigar são formas de interação ativa do usuário no processo de rotulação das imagens e o quão efetivas elas são em relação ao modelo clássico de aprendizado ativo.
+
 \end{resumo}
+
+
+
 
 % O resumo é obrigatório, em português e inglês. Este comando também gera
 % automaticamente a referência para o próprio documento, conforme as normas
@@ -98,17 +98,17 @@ texto texto.
 
 % Listas criadas manualmente
 
-\chapter*{Lista de Abreviaturas}
-\begin{tabular}{rl}
-         CFT         & Transformada contínua de Fourier (\emph{Continuous Fourier Transform})\\
-         DFT         & Transformada discreta de Fourier (\emph{Discrete Fourier Transform})\\
-        EIIP         & Potencial de interação elétron-íon (\emph{Electron-Ion Interaction Potentials})\\
-        STFT         & Tranformada de Fourier de tempo reduzido (\emph{Short-Time Fourier Transform})\\
-	ABNT         & Associação Brasileira de Normas Técnicas\\
-	URL          & Localizador Uniforme de Recursos (\emph{Uniform Resource Locator})\\
-	IME          & Instituto de Matemática e Estatística\\
-	USP          & Universidade de São Paulo
-\end{tabular}
+%\chapter*{Lista de Abreviaturas}
+%\begin{tabular}{rl}
+%         CFT         & Transformada contínua de Fourier (\emph{Continuous Fourier Transform})\\
+%         DFT         & Transformada discreta de Fourier (\emph{Discrete Fourier Transform})\\
+%        EIIP         & Potencial de interação elétron-íon (\emph{Electron-Ion Interaction Potentials})\\
+%        STFT         & Tranformada de Fourier de tempo reduzido (\emph{Short-Time Fourier Transform})\\
+%	ABNT         & Associação Brasileira de Normas Técnicas\\
+%	URL          & Localizador Uniforme de Recursos (\emph{Uniform Resource Locator})\\
+%	IME          & Instituto de Matemática e Estatística\\
+%	USP          & Universidade de São Paulo
+%\end{tabular}
 
 % Normalmente, "\chapter*" faz o novo capítulo iniciar em uma nova página.
 % Como cada uma destas listas é muito curta, não faz muito sentido fazer
@@ -116,19 +116,19 @@ texto texto.
 % desabilitar a quebra de página.
 
 %\chapter*{Lista de Símbolos}
-{\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \chapter*{Lista de Símbolos} }
-\begin{tabular}{rl}
-        $\omega$    & Frequência angular\\
-        $\psi$      & Função de análise \emph{wavelet}\\
-        $\Psi$      & Transformada de Fourier de $\psi$\\
-\end{tabular}
+%{\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \chapter*{Lista de Símbolos} }
+%\begin{tabular}{rl}
+%        $\omega$    & Frequência angular\\
+%        $\psi$      & Função de análise \emph{wavelet}\\
+%        $\Psi$      & Transformada de Fourier de $\psi$\\
+%\end{tabular}
 
 % Listas criadas automaticamente
-%\listoffigures
-{\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \listoffigures }
+% \listoffigures
+{\%let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \listoffigures }
 
 %\listoftables
-{\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \listoftables }
+%{\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \listoftables }
 
 % Sumário (obrigatório)
 \tableofcontents
