@@ -58,30 +58,32 @@ Aplicamos o framework anterior neste dataset. Como temos como premissa que são 
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\textwidth]{figures/grafico_exemplo_sintetico.png}
+  \includegraphics[width=0.9\textwidth]{figures/grafico_exemplo_sintetico.png}
   \caption{Gráfico com Resultados dos Dados Sintéticos}
   \label{fig:grafico_exemplo_sintetico}
 \end{figure}
 
-Fizemos os testes com a abordagem do Aprendizado Ativo e através de forma randômica. Escolhemos dez vizinhos próximos para encontrar as arestas e isso nos gerou um total de 300 dados, o que representa um redução de 70\% do dataset original. O gráfico ~\ref{fig:grafico_exemplo_sintetico} mostra a performance de ambos frameworks. É interessante notar que inicialmente o framework de Aprendizado Ativo não possui uma boa acurácia mas, após algumas amostras, entra numa sequência crescente, chegando em 0.98\% com 302 amostras, enquanto, se selecionamos os dados de forma randômica chegamos em 0.9688\%. Além disso, com os dados aleatórios, atingimos um valor de 0.98\% apenas a partir das 900 amostras. Apesar de ambos os resultados terem uma boa taxa de acerto (provavelmente por ser um exemplo simples), o framework de Aprendizado Ativo mostrou a mesma taxa de acerto que a forma randômica com 1/3 de amostras necessárias. 
+Fizemos os testes com a abordagem do Aprendizado Ativo e através de forma randômica. Escolhemos dez vizinhos próximos para encontrar as arestas e isso nos gerou um total de 300 dados, o que representa um redução de 70\% do dataset original. O gráfico ~\ref{fig:grafico_exemplo_sintetico} mostra a performance de ambos frameworks. É interessante notar que inicialmente o framework de Aprendizado Ativo não possui uma boa acurácia mas, após algumas amostras, entra numa sequência crescente, chegando em 98\% com 302 amostras, enquanto, se selecionamos os dados de forma randômica chegamos em 96.88\%. Além disso, com os dados aleatórios, atingimos um valor de 98\% apenas a partir das 900 amostras. Apesar de ambos os resultados terem uma boa taxa de acerto (provavelmente por ser um exemplo simples), o framework de Aprendizado Ativo mostrou a mesma taxa de acerto que a forma randômica com 1/3 de amostras necessárias. 
 
 
 \section{Experimentos com Dados de Plâncton}
 \label{sec:experimentos_plancton}
 
-Para os experimentos com dados de Plâncton utilizamos a base de dados da FURG e escolhemos apenas 6 classes possíveis de Plâncton: 
+Para os experimentos com dados de Plâncton utilizamos a base de dados da FURG e escolhemos apenas 6 classes possíveis de Plâncton. A figura ~\ref{fig:Plancton_Exemplos} mostra alguns exemplos de imagens.Quando aplicado o K-means foi utilizado doze clusters, seguindo a mesma lógica de termos o dobro de clusters para o máximo esperado de classes. Para os vizinhos próximos foi utilizado o valor de 8 vizinhos. 
 
-\begin{enumerate}
-  \item Bacillariophycidae-1
-  \item Prorocentrales
-  \item Spirotrichea
-  \item Peridiniales
-  \item Gymnodiniales
-  \item Cochlodinium
-\end{enumerate}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/Plancton_Exemplos.png}
+  \caption{Exemplos de Imagens de Plâncton Utilizadas. As classes são 1:Bacillariophycidae-1, 2:Prorocentrales, 3:Spirotrichea, 4:Peridiniales, 5:Gymnodiniales, 6:Cochlodinium}
+  \label{fig:Plancton_Exemplos}
+\end{figure}
 
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/grafico_exemplo_plancton.png}
+  \caption{Gráfico com Resultados dos Dados de Plâncton}
+  \label{fig:grafico_exemplo_plancton}
+\end{figure}
 
-
-
-
+Assim como ocorreu com os exemplo sintético, os resultados mostraram que, nas primeiras interações, o framework de Aprendizado Ativo é inferior ao randômico mas, a partir da interação 22, com 471 dados, os dois frameworks possuem a mesma acurácia de 82\%. Desta interação em diante o Aprendizado Ativo apenas melhora sua performance, enquando os dados aleatórios permanecem em uma tendência constante. No final, com cerca de 900 amostras, o framework de Aprendizado Ativo chega em uma acurácia de 88.62\%. Os dados aleatórios só chegam nessa acurácia com cderca de 1400 amostras. Isto é, com 2/3 do esforço atingimos a mesma acurácia.
