@@ -1,10 +1,10 @@
 %% ------------------------------------------------------------------------- %%n
-\chapter{Descrição do Problema e Proposta}
+\chapter{Descrição da proposta}
 \label{cap:Proposta}
 
-O problema que estamos tratando, classificação de imagens de plâncton, enquadra-se na situação de dados não rotulados abundantes e com elevado custo de rotulação. Dado essa situação, o objetivo deste trabalho é o desenvolvimento de métodos para a rotulação e classificação rápida dessas imagens, a fim de que estudos posteriores, dependentes da classificação, tornem-se viáveis. 
+O problema que estamos tratando, classificação de imagens de plâncton, enquadra-se na situação de dados não rotulados abundantes e com elevado custo de rotulação. Conforme mencionado na introdução, o objetivo deste trabalho é o desenvolvimento de métodos para a rotulação e classificação rápida e correta dessas imagens, a fim de que estudos posteriores, dependentes da classificação, tornem-se viáveis. 
 
-Como foi visto no capítulo anterior, o aprendizado ativo poderia ser uma abordagem a ser utilizada para rotular um grande conjunto de amostras, com a ajuda de um especialista. Neste processo, o objetivo é a minimização do esforço de interação do usuário. Em seguida, uma vez em posse de amostras rotuladas, um classificador pode ser treinado e utilizado para automaticamente classificar o restante das amostras não rotuladas. 
+Como foi visto no capítulo anterior, o aprendizado ativo é uma possível abordagem para rotular um grande conjunto de amostras, sem requerer a preparação prévia de um conjunto de treinamento grande. Neste processo, o usuário rotula apenas as amostras para as quais o algoritmo solicita um rótulo. De forma geral, o objetivo da abordagem é a minimização do esforço de interação do usuário. O processo continua até que uma boa taxa de classificação seja atingida. Esse classificador pode então ser utilizado para classificar novas amostras. 
 
 Também conforme comentado no capítulo anterior, pesquisas recentes relacionadas à interação de usuários na tarefa de rotulação indicam as limitações do aprendizado ativo clássico. Nesse, o especialista tem uma atuação limitada de apenas confirmar ou corrigir o rótulo atribuído pelo algoritmo a algumas das amostras. Uma forma para contornar essas limitações são abordagens que colocam o especialista em um papel mais central, no qual sua atuação passa a incluir a possibilidade de não só corrigir ou rotular amostras selecionadas pelo algoritmo, mas também participar no processo de seleção das amostras a serem rotuladas [\cite{castro2009human, kottke2018other}]. Sendo que, no caso dos plânctons, estudos mostram que a incorporação de conhecimentos de especialistas aumenta a acurácia dos modelos [\cite{benfield2007rapid}]. A figura ~\ref{fig:frameworks_AL} demonstra essa ideia. Do lado esquerdo temos o framework já explicado nos capítulos anteriores, onde o expert participa do processo apenas para aprovar ou desaprovar a classificação feita pelo algoritmo. Do lado direito da figura, temos a mudança na etapa 2, do usuário fazendo parte das escolhas das amostras.
 
@@ -41,8 +41,7 @@ Assim como o trabalho de [\cite{bernard2018comparing}], as interações dos usu�
 \subsection{Interação Sobre Galeria de Imagens} 
 \label{sec:galeria_imagens}
 
-Para rotular uma imagem, o especialista precisa ver o organismo presente na imagem. Dado que estamos pressupondo uma representação  das imagens como pontos no $R^
-n$, podemos usar métricas de similaridade para selecionar grupos de imagens similares segundo essa métrica e exibir múltiplas imagens de um grupo simultaneamente.
+Para rotular uma imagem, o especialista precisa ver o organismo presente na imagem. Dado que estamos pressupondo uma representação  das imagens como pontos no $\mathbb{R}^n$, podemos usar métricas de similaridade para selecionar grupos de imagens similares segundo essa métrica e exibir múltiplas imagens de um grupo simultaneamente.
  
 Nesta situação, supondo-se que a maior parte dos organismos são de uma mesma classe, em poucas interações o especialista pode corrigir os rótulos errados e confirmar os demais como rótulos corretos. 
 
@@ -56,18 +55,27 @@ A partir da definição de como ocorrerá essa interação, será possível tamb
 
 
 
-\section{Avaliação do Método}
+\section{Avaliação do método}
 \label{sec:avaliação do método}
 
-Propomos neste trabalho avaliar três frameworks. O aprendizado ativo clássico como baseline, no qual sua efetividade pode ser ilustrada em um gráfico com o número de iterações x acurácia, que mostra como a acurácia do classificador gerado ao longo das iterações melhora com o número de iterações. O ideal é termos uma curva que atinge alta acurácia logo nas primeiras iterações. Essa mesma curva pode ser reproduzida para o método a ser desenvolvido, com o usuário ativo na escolha das amostras. Espera-se atingir boa acurácia com menor número de iterações em relação ao aprendizado ativo clássico. Além disso também faremos a comparação com amostras escolhidas de forma randômica, pois essa é uma forma comumente utilizada nos trabalhos de aprendizado ativo.
+Propomos neste trabalho avaliar três variações do framework:
+\begin{itemize}
+    \item {\bf Seleção aleatória de amostras para rotulação}: esta variante é comumente utilizada como baseline quando uma nova estratégia em aprendizado ativo é desenvolvida.
+    
+    \item {\bf aprendizado ativo clássico}: esta é a variante na qual o oráculo tem um papel passivo de apenas confirmar ou corrigir o rótulo atribuído pelo classificador corrente. Como visto acima, diversas variações são possíveis quanto às estratégias de seleção de amostras para as consultas a serem feitas com o oráculo.
+    
+\item {\bf Aprendizado ativo com interação ativa de usuário:} este corresponde à variante a ser desenvolvida (oráculo ativo) neste trabalho.
+\end{itemize}
 
-Em um primeiro momento, a interação será simulada, uma vez que dispomos de datasets rotulados. Usaremos os rótulos conhecidos como sendo a resposta do oráculo. No entanto, também pretendemos fazer experimentos com usuários especialistas.
+O desempenho dos algoritmos é tipicamente ilustrado por meio de um gráfico "número de iterações $\times$  acurácia", que mostra como a acurácia do classificador gerado ao longo das iterações melhora com o número de iterações (exemplos podem ser vistos no capítulo~\ref{cap:Experimentos_Resultados}). O ideal é termos uma curva que atinge alta acurácia logo nas primeiras iterações. Em geral a comparação com a curva referente ao aprendizado baseado em seleção aleatória de dados é empregada para mostrar a efetividade de um algoritmo de aprendizado ativo. Esperamos portanto traçar as três curvas e a expectativa é a de que a curva referente ao aprendizado ativo com interação ativa do usuário atinja alta acurácia com um número menor de iterações.
+
+Em um primeiro momento, as interações serão simuladas, uma vez que dispomos de datasets rotulados. Usaremos os rótulos conhecidos como sendo a resposta do oráculo. No entanto, também pretendemos fazer experimentos com usuários especialistas, como detalhado no capítulo~\ref{cap:Cronogramanotes}.
 
 \section{Considerações sobre a parte experimental}
 \label{sec:consideracoes_parte_experimental}
 
 
-\subsection{Base de Dados que Poderão ser Usados} 
+\subsection{Base de dados que poderão ser usados} 
 \label{sec:base_usadas}
 
 Neste trabalho teremos três bases de dados disponíveis. As especificações de cada uma estão a seguir.

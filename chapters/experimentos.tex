@@ -3,12 +3,12 @@
 \label{cap:Experimentos_Resultados}
 
 
-Nesse capítulo serão apresentados alguns experimentos preliminares que foram feitos com dados sintéticos e com reais de Plâncton. 
+Nesse capítulo serão apresentados alguns experimentos preliminares que foram feitos com dados sintéticos e com dados reais de plâncton. 
 
 \section{Framework de Aprendizado Ativo Utilizado}
 \label{sec:framework_al}
 
-O framework utilizado nesses experimentos foram baseados no trabalho de [\cite{saito2014active}]. A figura ~\ref{fig:priscila_algoritmo} e os seguintes passos explicam as etapas:
+O framework utilizado nesses experimentos foram baseados no trabalho de [\cite{saito2014active}]. A figura~\ref{fig:priscila_algoritmo} e os seguintes passos explicam as etapas:
 
 \begin{figure}
   \centering
@@ -21,30 +21,40 @@ O framework utilizado nesses experimentos foram baseados no trabalho de [\cite{s
 
 
 \begin{enumerate}
-  \item No primeiro quadro (a), temos um conjunto de dados que representam um espaço de features. Inicialmente esses dados não estão rotulados, então não sabemos quais suas verdadeiras classes. Temos a informação de quantas classes podem existir para esses dados;
-  \item Em (b), aplicamos um algoritmo não-supervisionado de clusterização. No nosso caso utilizamos o K-means e utilizamos como k duas vezes o número de classes possíveis;
-  \item No (c), a partir do momento que temos os K-clusters, aplicamos o algoritmo de vizinhos próximos KNN para gerarmos um grafo. O número de vizinhos foi escolhido de forma prática;
-  \item Em (d), reduzimos o dataset original para os dados que possuem alguma relação KNN com vizinhos que sejam diferentes da classe do seu respectivo cluster. A ideia é que tenhamos apenas os dados que estejam na borda dos cluters pois eles são mais representativos;
-  \item Ainda em (d), ordenamos as amostras do dataset reduzido, de maneira decrescente, através da distância euclidiana das arestas. Iniciamos por elas pois temos como premisa que uma maior distância pode representar amostras mais relevantes;
-  \item Nos quadros (e) e (f), como sabemos os rótulos verdadeiros dos dados, geramos um classificador através dos centroides dos clusters. Esses dados compõe um novo dataset que será utilizado como base de treinamento. A partir disso entramos no ciclo do Aprendizado Ativo. A cada inicio do ciclo, selecionamos n amostras do dataset reduzido e o classificador gera as previsões dos dados. Comparamos o resultado com os rótulos verdadeiros e, caso esteja incorreto, corrigimos e incorporamos esse dados para a base de treinamento. Esse ciclo continua até que os dados disponíveis no dataset reduzido acabem. 
+  \item No primeiro quadro (a), temos um conjunto de dados em um espaço de características. Inicialmente esses dados não estão rotulados, então não sabemos quais são suas classes. Temos a informação sobre quantas classes podem existir para esses dados;
+  
+  \item Em (b), aplicamos um algoritmo não-supervisionado de clusterização. No nosso caso utilizamos o algoritmo K-means e consideramos o número de classes $k$ como sendo o dobro do número de classes possíveis. No exemplo, supomos que são 3 classes, logo consideramos $k=6$; \TODO{Mas a figura nao bate com esse exemplo ...}
+  
+  \item Em (c), a partir do momento que temos os clusters, aplicamos o algoritmo de vizinhos mais próximos K-NN para gerarmos um grafo. O número de vizinhos foi escolhido de forma prática;
+  \TODO{Não está claro como se gera o grafo ...}
+  
+  \item Em (d), reduzimos o dataset original para os dados que possuem vizinhos pertencentes a clusters distintos. A ideia é que tenhamos apenas os dados que estejam na borda dos clusters pois eles são mais informativos;
+  
+  \item Ainda em (d), ordenamos as amostras do dataset reduzido, de maneira decrescente, segundo a distância euclidiana das arestas. Iniciamos por elas pois temos como premissa que uma maior distância pode representar amostras mais relevantes;
+  
+  \item Nos quadros (e) e (f), %como sabemos os rótulos verdadeiros dos dados, geramos um classificador através dos centroides dos clusters. Esses dados compõe um novo dataset que será utilizado como base de treinamento. 
+  \NINA{os centróides dos clusters são rotulados, compondo o conjunto inicial T. Um classificador é treinado a partir de T. Na prática, essa rotulação pode ser obtida por meio de consulta ao oráculo, mas em uma simulação sabemos a classe de cada amostra e esse conhecimento é usado para simular um oráculo.}
+  A partir desse ponto entramos no ciclo do Aprendizado Ativo. A cada início de ciclo, selecionamos $n$ amostras do dataset reduzido e o classificador gera as predições para essas amostras. A consulta ao oráculo é simulada comparando-se a classificação atribuída pelo classificador com os rótulos verdadeiros. Caso a clsse esteja incorreta, corrigimos a classe. Incorporamos amostras selecionadas para a base de treinamento T. Esse ciclo continua até que os dados disponíveis no dataset reduzido acabem. 
 \end{enumerate}
 
-No caso dos dados rândomicos seguimos a mesma lógica até o passo 2. A partir disso geramos um classificador também pelos centróids a iniciamos um ciclo de aprendizado onde, a cada ciclo, selecionamos n dados, com a diferença de ser de forma rândomica.
+\NINA{Note que a redução do conjunto de dados não rotulados realizada no início do processo visa apenas reduzir o custo computacional.}
+
+No caso da seleção aleatória, seguimos a mesma lógica até o passo 2 inclusive. A partir disso, geramos um classificador também usando os centróides e iniciamos o ciclo de aprendizado ativo. A cada ciclo, selecionamos $n$ dados não rotulados de forma aleatória.
 
 \section{Experimentos com Dados Sintéticos}
 \label{sec:experimentos_sinteticos}
 
-Para os experimentos com dados sintéticos, geramos um dataset com 1000 amostras que representam um espaço de features 2D. A figura ~\ref{fig:exemplo_sintetico_1} mostra do lado esquerdo os dados gerados sem nenhuma classe, enquanto o lado direito mostra os rótulos verdadeiros. 
+Para os experimentos com dados sintéticos, geramos um dataset com 1000 amostras que representam um espaço de características 2D. A figura~\ref{fig:exemplo_sintetico_1} mostra do lado esquerdo os dados gerados sem informação de classe, enquanto o lado direito mostra os rótulos de classe. 
 
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{figures/toy_example_1.png}
-  \caption{Exemplo Sintético}
+  \caption{Exemplo sintético}
   \label{fig:exemplo_sintetico_1}
 \end{figure}
 
-Aplicamos o framework anterior neste dataset. Como temos como premissa que são quatro classes possíveis, utilizamos no K-means oito clusters. A partir disso aplicamos o algoritmo de KNN e obtemos a relações de interesse, conforme a figura ~\ref{fig:exemplo_sintetico_2}. 
+Aplicamos o framework anterior neste dataset. Como temos como premissa que são quatro classes possíveis, utilizamos no K-means oito clusters. A partir disso aplicamos o algoritmo de K-NN e obtemos a relações de interesse, conforme a figura ~\ref{fig:exemplo_sintetico_2}. 
 
 \begin{figure}
   \centering
@@ -53,7 +63,7 @@ Aplicamos o framework anterior neste dataset. Como temos como premissa que são 
   \label{fig:exemplo_sintetico_2}
 \end{figure}
 
-É interessante notar que algumas amostras podem não ser tão relevantes pois pertencem ao mesmo grupo. Por exemplo os clusters laranja (1) e roxo (4), na imagem ~\ref{fig:exemplo_sintetico_2}, que pertencem à mesma classe. Apesar disso, como o classificador será treinado inicialmente com o centroide de cada classe, é provável que a predição convirja rapidamente. De qualquer forma, os dados mais relevantes estão entre as amostras que não são da mesma classe. 
+É interessante notar que algumas amostras podem não ser tão relevantes pois pertencem ao mesmo grupo. Por exemplo, os clusters laranja (1) e roxo (4), na imagem ~\ref{fig:exemplo_sintetico_2}, são de fato uma única classe. Apesar disso, como o classificador será treinado inicialmente com o centroide de cada classe, é provável que a predição convirja rapidamente. De qualquer forma, os dados mais relevantes estão entre as amostras que não são da mesma classe. 
 
 
 \begin{figure}
@@ -63,27 +73,37 @@ Aplicamos o framework anterior neste dataset. Como temos como premissa que são 
   \label{fig:grafico_exemplo_sintetico}
 \end{figure}
 
-Fizemos os testes com a abordagem do Aprendizado Ativo e através de forma randômica. Escolhemos dez vizinhos próximos para encontrar as arestas e isso nos gerou um total de 300 dados, o que representa um redução de 70\% do dataset original. O gráfico ~\ref{fig:grafico_exemplo_sintetico} mostra a performance de ambos frameworks. É interessante notar que inicialmente o framework de Aprendizado Ativo não possui uma boa acurácia mas, após algumas amostras, entra numa sequência crescente, chegando em 98\% com 302 amostras, enquanto, se selecionamos os dados de forma randômica chegamos em 96.88\%. Além disso, com os dados aleatórios, atingimos um valor de 98\% apenas a partir das 900 amostras. Apesar de ambos os resultados terem uma boa taxa de acerto (provavelmente por ser um exemplo simples), o framework de Aprendizado Ativo mostrou a mesma taxa de acerto que a forma randômica com 1/3 de amostras necessárias. 
+Fizemos os testes com a abordagem de seleção descrita acima e também com a seleção aleatória.  Escolhemos dez vizinhos próximos para encontrar as arestas e isso nos gerou um total de 300 dados, o que representa um redução de 70\% do dataset original. O gráfico da figura~\ref{fig:grafico_exemplo_sintetico} mostra a performance de ambas estratégias de seleção. É interessante notar que inicialmente o framework de Aprendizado Ativo não possui uma boa acurácia mas, após algumas amostras, entra numa sequência crescente, chegando em 98\% com 302 amostras. Em contraste, quando selecionamos os dados de forma randômica chegamos em 96.88\%. Além disso, com os dados aleatórios, atingimos um valor de 98\% apenas a partir de 900 amostras. Apesar de ambos os resultados terem uma boa taxa de acerto (provavelmente por ser um exemplo simples), o framework de Aprendizado Ativo mostrou a mesma taxa de acerto que a seleção aleatória com apenas 1/3 de amostras. 
 
 
 \section{Experimentos com Dados de Plâncton}
 \label{sec:experimentos_plancton}
 
-Para os experimentos com dados de Plâncton utilizamos a base de dados da FURG e escolhemos apenas 6 classes possíveis de Plâncton. A figura ~\ref{fig:Plancton_Exemplos} mostra alguns exemplos de imagens.Quando aplicado o K-means foi utilizado doze clusters, seguindo a mesma lógica de termos o dobro de clusters para o máximo esperado de classes. Para os vizinhos próximos foi utilizado o valor de 8 vizinhos. 
+Para os experimentos com imagens de plâncton, utilizamos parte da base de dados da FURG, \TODO{consistindo de XX amostras de 6 classes}. A figura~\ref{fig:Plancton_Exemplos} mostra alguns exemplos de imagens.
+
 
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{figures/Plancton_Exemplos.png}
-  \caption{Exemplos de Imagens de Plâncton Utilizadas. As classes são 1:Bacillariophycidae-1, 2:Prorocentrales, 3:Spirotrichea, 4:Peridiniales, 5:Gymnodiniales, 6:Cochlodinium}
+  \caption{Exemplos de imagens de plâncton utilizadas. As classes são 1:Bacillariophycidae-1, 2:Prorocentrales, 3:Spirotrichea, 4:Peridiniales, 5:Gymnodiniales, 6:Cochlodinium}
   \label{fig:Plancton_Exemplos}
 \end{figure}
+
+\TODO{Essas XX imagens foram processadas por uma rede convolucional ZZ pré-treinada sobre o ImageNet, conhecido dataset público para classificação e detecção de objetos em imagens naturais, para a extração de características. Especificamente, os $n=?$ valores da camada X foram tomadas como as características de cada imagem.}
+
+Para o cálculos dos clusters, o algoritmo K-means foi utilizado com $k=12$, seguindo a mesma lógica de termos o dobro de clusters em relação ao número de classes. Para a redução do conjunto de dados iniciais, no cálculos dos vizinhos mais próximos foi utilizado o valor de 8. \TODO{Após esse processo, o conjunto inicial foi reduzido para YY amostras.}
 
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{figures/grafico_exemplo_plancton.png}
-  \caption{Gráfico com Resultados dos Dados de Plâncton}
+  \caption{Gráfico com resultados sobre as imagens de plâncton}
   \label{fig:grafico_exemplo_plancton}
 \end{figure}
 
-Assim como ocorreu com os exemplo sintético, os resultados mostraram que, nas primeiras interações, o framework de Aprendizado Ativo é inferior ao randômico mas, a partir da interação 22, com 471 dados, os dois frameworks possuem a mesma acurácia de 82\%. Desta interação em diante o Aprendizado Ativo apenas melhora sua performance, enquando os dados aleatórios permanecem em uma tendência constante. No final, com cerca de 900 amostras, o framework de Aprendizado Ativo chega em uma acurácia de 88.62\%. Os dados aleatórios só chegam nessa acurácia com cderca de 1400 amostras. Isto é, com 2/3 do esforço atingimos a mesma acurácia.
+Assim como ocorreu no caso do exemplo sintético, os resultados mostram que, nas primeiras iterações, o aprendizado ativo é inferior ao método aleatório mas, a partir da iteração 22, com 471 dados, os dois métodos apresentam a mesma acurácia de 82\%. Desta iteração em diante o método de aprendizado ativo apenas melhora sua performance, enquanto o método aleatório permanece em uma tendência constante. No final, com cerca de 900 amostras, o método de aprendizado ativo atinge uma acurácia de 88.62\%. O método aleatório só atinge essa mesma acurácia com cerca de 1400 amostras. Isto é, o aprendizado ativo atinge a mesma acurácia com 2/3 do esforço.
+
+
+\NINA{É importante notar que o algoritmo de seleção empregado tem suas particularidades e pode não ser adequado para o problema em questão. Um aspecto particularmente crítico é a redução realizada inicialmente. Caso a fronteira de decisão correta esteja realmente próxima ao conjunto reduzido de amostras então uma boa acurácia poderá ser obtida. Porém, em caso contrário, o conjunto reduzido não conterá todas as amostras informativas.}
+
+\NINA{Há uma relação direta entre o número de clusters e o número de amostras no conjunto reduzido. Por um lado, é desejável considerar um número maior de clusters a fim de contemplar todos os pontos informativos, mas por outro lado isso pode resultar em um conjunto não tão reduzido de amostras a serem usadas no ciclo de aprendizado ativo, impactando no desempenho computacional. Desta forma, é bastante compreensível por que há várias variantes de algoritmos de aprendizado ativo.} 
